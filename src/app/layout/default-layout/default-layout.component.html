@@ -1,45 +1,72 @@
-<!-- sidebar -->
+<!--sidebar-->
 <c-sidebar
   #sidebar1="cSidebar"
-  class="hidden print:hidden fixed border-r bg-gray-800 text-white h-screen"
+  class="d-print-none sidebar sidebar-fixed border-end"
+  colorScheme="dark"
   id="sidebar1"
-  [visible]="true"
+  visible
 >
-  <c-sidebar-header class="border-b border-gray-700">
+  <c-sidebar-header class="border-bottom">
     <c-sidebar-brand [routerLink]="[]">
-      <svg [class]="{icon: false}" cIcon class="w-8 h-8" name="logo" title="CoreUI Logo"></svg>
-      <svg cIcon class="w-8 h-8 hidden sm:block" name="signet" title="CoreUI Logo"></svg>
+      <svg
+        [class]="{ icon: false }"
+        cIcon
+        class="sidebar-brand-full"
+        height="32"
+        name="logo"
+        title="CoreUI Logo"
+      ></svg>
+      <svg
+        cIcon
+        class="sidebar-brand-narrow"
+        height="32"
+        name="signet"
+        title="CoreUI Logo"
+      ></svg>
     </c-sidebar-brand>
   </c-sidebar-header>
 
-  <ng-scrollbar #scrollbar="ngScrollbar" (updated)="onScrollbarUpdate(scrollbar.state)" class="overflow-auto" pointerEventsMethod="scrollbar" visibility="hover">
-    <c-sidebar-nav #overflow [navItems]="navItems" dropdownMode="close" compact></c-sidebar-nav>
+  <ng-scrollbar
+    #scrollbar="ngScrollbar"
+    (updated)="onScrollbarUpdate(scrollbar.state)"
+    class="overflow"
+    pointerEventsMethod="scrollbar"
+    visibility="hover"
+  >
+    <c-sidebar-nav
+      #overflow
+      [navItems]="navItems"
+      dropdownMode="close"
+      compact
+    />
   </ng-scrollbar>
-
-  <c-sidebar-footer *ngIf="!sidebar1.narrow" cSidebarToggle="sidebar1" class="border-t border-gray-700 hidden lg:flex items-center justify-center cursor-pointer">
-    <button cSidebarToggler aria-label="Toggle sidebar fold" class="text-gray-400 hover:text-white">
-      <svg cIcon name="cil-options" class="w-6 h-6"></svg>
-    </button>
+  @if (!sidebar1.narrow) {
+  <c-sidebar-footer
+    cSidebarToggle="sidebar1"
+    class="border-top d-none d-lg-flex"
+    toggle="unfoldable"
+    style="cursor: pointer"
+  >
+    <button cSidebarToggler aria-label="Toggle sidebar fold"></button>
   </c-sidebar-footer>
+  }
 </c-sidebar>
 
-<!-- main -->
-<div class="flex flex-col min-h-screen">
-  <!-- app-header -->
+<!--main-->
+<div class="wrapper d-flex flex-column min-vh-100">
+  <!--app-header-->
   <app-default-header
     [cShadowOnScroll]="'sm'"
-    class="mb-4 print:hidden sticky top-0 bg-white shadow-sm"
+    class="mb-4 d-print-none header header-sticky p-0 shadow-sm"
     position="sticky"
     sidebarId="sidebar1"
-  ></app-default-header>
-
-  <!-- app-body -->
-  <div class="flex-grow">
+  />
+  <!--app-body-->
+  <div class="body flex-grow-1">
     <c-container breakpoint="lg" class="h-auto px-4">
-      <router-outlet></router-outlet>
+      <router-outlet />
     </c-container>
   </div>
-
-  <!-- app footer -->
-  <app-default-footer></app-default-footer>
+  <!--app footer-->
+  <app-default-footer />
 </div>
