@@ -1,8 +1,7 @@
-<!--<c-header class="mb-4 d-print-none" position="sticky">-->
 <ng-container>
   <c-container [fluid]="true" class="border-bottom px-4">
     <button
-      [cSidebarToggle]="sidebarId()"
+      [cSidebarToggle]="sidebarId"
       cHeaderToggler
       class="btn"
       toggle="visible"
@@ -23,7 +22,7 @@
       </c-nav-item>
     </c-header-nav>
 
-    <c-header-nav class="d-none d-md-flex ms-auto ">
+    <c-header-nav class="d-none d-md-flex ms-auto">
       <a cNavLink>
         <svg cIcon class="my-1" name="cilBell" size="lg"></svg>
       </a>
@@ -39,22 +38,21 @@
       <div class="nav-item py-1">
         <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
       </div>
-      <ng-container *ngTemplateOutlet="themeDropdown" />
+      <ng-container *ngTemplateOutlet="themeDropdown"></ng-container>
       <div class="nav-item py-1">
         <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
       </div>
     </c-header-nav>
 
     <c-header-nav class="mx-0">
-      <ng-container *ngTemplateOutlet="userDropdown" />
+      <ng-container *ngTemplateOutlet="userDropdown"></ng-container>
     </c-header-nav>
-
   </c-container>
+
   <c-container [fluid]="true" class="px-4">
-    <c-breadcrumb-router />
+    <c-breadcrumb-router></c-breadcrumb-router>
   </c-container>
 </ng-container>
-<!--</c-header>-->
 
 <ng-template #userDropdown>
   <c-dropdown [popperOptions]="{ placement: 'bottom-start' }" variant="nav-item">
@@ -78,30 +76,28 @@
         <a cDropdownItem routerLink="">
           <svg cIcon class="me-2" name="cilBell"></svg>
           Updates
-          <c-badge class="ms-2 float-end" color="info"> 42</c-badge>
+          <c-badge class="ms-2 float-end" color="info">42</c-badge>
         </a>
       </li>
       <li>
         <a cDropdownItem routerLink="/apps/email/inbox">
           <svg cIcon class="me-2" name="cilEnvelopeOpen"></svg>
           Messages
-          <c-badge class="ms-2 float-end" color="success">
-            42
-          </c-badge>
+          <c-badge class="ms-2 float-end" color="success">42</c-badge>
         </a>
       </li>
       <li>
         <a cDropdownItem routerLink="">
           <svg cIcon class="me-2" name="cilTask"></svg>
           Tasks
-          <c-badge class="ms-2 float-end" color="danger"> 42</c-badge>
+          <c-badge class="ms-2 float-end" color="danger">42</c-badge>
         </a>
       </li>
       <li>
         <a cDropdownItem routerLink="">
           <svg cIcon class="me-2" name="cilCommentSquare"></svg>
           Comments
-          <c-badge class="ms-auto" color="warning"> 42</c-badge>
+          <c-badge class="ms-auto" color="warning">42</c-badge>
         </a>
       </li>
       <li>
@@ -109,7 +105,6 @@
           Settings
         </h6>
       </li>
-      <li></li>
       <li>
         <a cDropdownItem routerLink="">
           <svg cIcon class="me-2" name="cilUser"></svg>
@@ -126,33 +121,23 @@
         <a cDropdownItem routerLink="">
           <svg cIcon class="me-2" name="cilCreditCard"></svg>
           Payments
-          <c-badge class="ms-2 float-end" color="secondary">
-            42
-          </c-badge>
+          <c-badge class="ms-2 float-end" color="secondary">42</c-badge>
         </a>
       </li>
       <li>
         <a cDropdownItem routerLink="">
           <svg cIcon class="me-2" name="cilFile"></svg>
           Projects
-          <c-badge class="ms-2 float-end" color="primary">
-            42
-          </c-badge>
+          <c-badge class="ms-2 float-end" color="primary">42</c-badge>
         </a>
       </li>
       <li>
         <hr cDropdownDivider />
       </li>
       <li>
-        <a cDropdownItem routerLink="">
-          <svg cIcon class="me-2" name="cilLockLocked"></svg>
-          Lock Account
-        </a>
-      </li>
-      <li>
-        <a cDropdownItem routerLink="">
+        <a cDropdownItem routerLink="" (click)="isSignedIn ? logout() : showLogin()">
           <svg cIcon class="me-2" name="cilAccountLogout"></svg>
-          Logout
+          {{ isSignedIn ? 'Logout' : 'Sign In' }}
         </a>
       </li>
     </ul>
@@ -165,17 +150,59 @@
       <svg cIcon [name]="icons()" size="lg"></svg>
     </button>
     <div cDropdownMenu>
-      @for (mode of colorModes; track mode.name) {
+      <ng-container *ngFor="let mode of colorModes; trackBy: trackByMode">
         <button
           (click)="colorMode.set(mode.name)"
-          [active]="colorMode()===mode.name"
+          [active]="colorMode() === mode.name"
           cDropdownItem
           class="d-flex align-items-center"
         >
           <svg cIcon class="me-2" [name]="mode.icon" size="lg"></svg>
           {{ mode.text }}
         </button>
-      }
+      </ng-container>
     </div>
   </c-dropdown>
 </ng-template>
+
+<!-- Login Form -->
+<div *ngIf="!isSignedIn" class="login-form d-flex justify-content-center align-items-center vh-100">
+  <div class="card" style="width: 400px;">
+    <div class="card-body">
+      <h4 class="card-title text-center">Sign In</h4>
+      <form [formGroup]="loginForm" (ngSubmit)="signIn()">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': loginForm.get('email')?.invalid && loginForm.get('email')?.touched }"
+          >
+          <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="invalid-feedback">
+            <div *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</div>
+            <div *ngIf="loginForm.get('email')?.errors?.['email']">Please enter a valid email address.</div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched }"
+          >
+          <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="invalid-feedback">
+            <div *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</div>
+            <div *ngIf="loginForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters long.</div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100" [disabled]="loginForm.invalid">Sign In</button>
+      </form>
+    </div>
+  </div>
+</div>
