@@ -1,0 +1,45 @@
+<!-- sidebar -->
+<c-sidebar
+  #sidebar1="cSidebar"
+  class="hidden print:hidden fixed border-r bg-gray-800 text-white h-screen"
+  id="sidebar1"
+  [visible]="true"
+>
+  <c-sidebar-header class="border-b border-gray-700">
+    <c-sidebar-brand [routerLink]="[]">
+      <svg [class]="{icon: false}" cIcon class="w-8 h-8" name="logo" title="CoreUI Logo"></svg>
+      <svg cIcon class="w-8 h-8 hidden sm:block" name="signet" title="CoreUI Logo"></svg>
+    </c-sidebar-brand>
+  </c-sidebar-header>
+
+  <ng-scrollbar #scrollbar="ngScrollbar" (updated)="onScrollbarUpdate(scrollbar.state)" class="overflow-auto" pointerEventsMethod="scrollbar" visibility="hover">
+    <c-sidebar-nav #overflow [navItems]="navItems" dropdownMode="close" compact></c-sidebar-nav>
+  </ng-scrollbar>
+
+  <c-sidebar-footer *ngIf="!sidebar1.narrow" cSidebarToggle="sidebar1" class="border-t border-gray-700 hidden lg:flex items-center justify-center cursor-pointer">
+    <button cSidebarToggler aria-label="Toggle sidebar fold" class="text-gray-400 hover:text-white">
+      <svg cIcon name="cil-options" class="w-6 h-6"></svg>
+    </button>
+  </c-sidebar-footer>
+</c-sidebar>
+
+<!-- main -->
+<div class="flex flex-col min-h-screen">
+  <!-- app-header -->
+  <app-default-header
+    [cShadowOnScroll]="'sm'"
+    class="mb-4 print:hidden sticky top-0 bg-white shadow-sm"
+    position="sticky"
+    sidebarId="sidebar1"
+  ></app-default-header>
+
+  <!-- app-body -->
+  <div class="flex-grow">
+    <c-container breakpoint="lg" class="h-auto px-4">
+      <router-outlet></router-outlet>
+    </c-container>
+  </div>
+
+  <!-- app footer -->
+  <app-default-footer></app-default-footer>
+</div>
