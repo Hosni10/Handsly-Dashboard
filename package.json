@@ -51,12 +51,15 @@
     "@types/jasmine": "^5.1.4",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^20.16.1",
+    "autoprefixer": "^10.4.20",
     "jasmine-core": "^5.2.0",
     "karma": "^6.4.4",
     "karma-chrome-launcher": "^3.2.0",
     "karma-coverage": "^2.2.1",
     "karma-jasmine": "^5.1.0",
     "karma-jasmine-html-reporter": "^2.1.0",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.11",
     "typescript": "~5.5.4"
   },
   "engines": {
