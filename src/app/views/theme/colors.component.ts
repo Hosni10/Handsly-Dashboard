@@ -1,22 +1,44 @@
-import { AfterViewInit, Component, HostBinding, Inject, Input, OnInit, Renderer2, forwardRef } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  HostBinding,
+  Inject,
+  Input,
+  OnInit,
+  Renderer2,
+  forwardRef,
+} from '@angular/core';
 import { DOCUMENT, NgClass } from '@angular/common';
 
 import { getStyle, rgbToHex } from '@coreui/utils';
-import { TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent, RowComponent, ColComponent } from '@coreui/angular';
+import {
+  TextColorDirective,
+  CardComponent,
+  CardHeaderComponent,
+  CardBodyComponent,
+  RowComponent,
+  ColComponent,
+} from '@coreui/angular';
 
 @Component({
-    templateUrl: 'colors.component.html',
-    standalone: true,
-    imports: [TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent, RowComponent, forwardRef(() => ThemeColorComponent)]
+  templateUrl: 'colors.component.html',
+  standalone: true,
+  imports: [
+    TextColorDirective,
+    CardComponent,
+    CardHeaderComponent,
+    CardBodyComponent,
+    RowComponent,
+    forwardRef(() => ThemeColorComponent),
+  ],
 })
 export class ColorsComponent implements OnInit, AfterViewInit {
-
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2
-  ) {
-  }
+  ) {}
 
+  // Your existing method
   public themeColors(): void {
     Array.from(this.document.querySelectorAll('.theme-color')).forEach(
       (element: Element) => {
@@ -36,10 +58,20 @@ export class ColorsComponent implements OnInit, AfterViewInit {
           </table>
         `;
         this.renderer.appendChild(htmlElement.parentNode, table);
-        // @ts-ignore
-        // el.parentNode.appendChild(table);
       }
     );
+  }
+
+  // New method to toggle visibility of the view form
+  public toggleViewForm(): void {
+    const viewForm = this.document.querySelector('.view-form');
+    if (viewForm) {
+      if (viewForm.classList.contains('hidden')) {
+        this.renderer.removeClass(viewForm, 'hidden');
+      } else {
+        this.renderer.addClass(viewForm, 'hidden');
+      }
+    }
   }
 
   ngOnInit(): void {}
@@ -50,20 +82,20 @@ export class ColorsComponent implements OnInit, AfterViewInit {
 }
 
 @Component({
-    selector: 'app-theme-color',
-    template: `
+  selector: 'app-theme-color',
+  template: `
     <c-col xl="2" md="4" sm="6" xs="12" class="my-4 ms-4">
       <div [ngClass]="colorClasses" style="padding-top: 75%;"></div>
       <ng-content></ng-content>
     </c-col>
   `,
-    standalone: true,
-    imports: [ColComponent, NgClass],
+  standalone: true,
+  imports: [ColComponent, NgClass],
 })
 export class ThemeColorComponent implements OnInit {
   @Input() color = '';
   public colorClasses = {
-    'theme-color w-75 rounded mb-3': true
+    'theme-color w-75 rounded mb-3': true,
   };
 
   @HostBinding('style.display') display = 'contents';
@@ -71,8 +103,7 @@ export class ThemeColorComponent implements OnInit {
   ngOnInit(): void {
     this.colorClasses = {
       ...this.colorClasses,
-      [`bg-${this.color}`]: !!this.color
+      [`bg-${this.color}`]: !!this.color,
     };
   }
 }
-
