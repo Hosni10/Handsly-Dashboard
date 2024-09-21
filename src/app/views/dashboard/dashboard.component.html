@@ -1,191 +1,21 @@
-<div class="my-4 p-4 bg-white rounded-lg shadow-lg">
-  <div class="mb-4">
-    <div class="flex justify-between items-center">
-      <div>
-        <h4 class="text-lg font-bold mb-1" id="traffic">Traffic</h4>
-        <div class="text-gray-500 text-sm">January - December 2023</div>
-      </div>
-      <div class="hidden md:flex items-center">
-        <button class="ml-3 bg-blue-500 text-white px-3 py-2 rounded" aria-label="Download">
-          <svg class="w-6 h-6">
-            <!-- Add your download icon here -->
-          </svg>
-        </button>
-        <form [formGroup]="trafficRadioGroup" class="flex items-center space-x-2 ml-3">
-          <input class="sr-only" formControlName="trafficRadio" type="radio" value="Day" id="dayRadio" />
-          <label (click)="setTrafficPeriod('Day')" for="dayRadio"
-            class="px-3 py-2 bg-gray-200 text-gray-600 rounded-lg cursor-pointer hover:bg-gray-300">
-            Day
-          </label>
-          <input class="sr-only" formControlName="trafficRadio" type="radio" value="Month" id="radioMonth" />
-          <label (click)="setTrafficPeriod('Month')" for="radioMonth"
-            class="px-3 py-2 bg-gray-200 text-gray-600 rounded-lg cursor-pointer hover:bg-gray-300">
-            Month
-          </label>
-          <input class="sr-only" formControlName="trafficRadio" type="radio" value="Year" id="radioYear" />
-          <label (click)="setTrafficPeriod('Year')" for="radioYear"
-            class="px-3 py-2 bg-gray-200 text-gray-600 rounded-lg cursor-pointer hover:bg-gray-300">
-            Year
-          </label>
-        </form>
-      </div>
+<div class="p-6 bg-white rounded-lg shadow-md">
+  <h2 class="text-2xl font-semibold mb-4">Dashboard Overview</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="p-4 bg-blue-500 text-white rounded-lg shadow">
+      <h3 class="text-lg">Total Users</h3>
+      <p class="text-3xl">{{ totalUsers }}</p>
     </div>
-
-    <div class="mt-10">
-      <canvas id="mainChart" class="w-full h-64"></canvas>
+    <div class="p-4 bg-green-500 text-white rounded-lg shadow">
+      <h3 class="text-lg">Total Projects</h3>
+      <p class="text-3xl">{{ totalProjects }}</p>
     </div>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-5 gap-4 text-center text-sm">
-    <div>
-      <div class="text-gray-500">Visits</div>
-      <strong>29.703 Users (40%)</strong>
-      <div class="mt-2 h-2 bg-green-500 rounded-full" style="width: 40%;"></div>
+    <div class="p-4 bg-yellow-500 text-white rounded-lg shadow">
+      <h3 class="text-lg">Total Earnings</h3>
+      <p class="text-3xl">{{ totalEarnings | currency }}</p>
     </div>
-    <div>
-      <div class="text-gray-500">Unique</div>
-      <strong>24.093 Users (20%)</strong>
-      <div class="mt-2 h-2 bg-blue-500 rounded-full" style="width: 20%;"></div>
+    <div class="p-4 bg-red-500 text-white rounded-lg shadow">
+      <h3 class="text-lg">Pending Tasks</h3>
+      <p class="text-3xl">{{ pendingTasks }}</p>
     </div>
-    <div>
-      <div class="text-gray-500">Page views</div>
-      <strong>78.706 Views (60%)</strong>
-      <div class="mt-2 h-2 bg-yellow-500 rounded-full" style="width: 60%;"></div>
-    </div>
-    <div>
-      <div class="text-gray-500">New Users</div>
-      <strong>22.123 Users (80%)</strong>
-      <div class="mt-2 h-2 bg-red-500 rounded-full" style="width: 80%;"></div>
-    </div>
-    <div class="hidden xl:block">
-      <div class="text-gray-500">Bounce Rate</div>
-      <strong>40.15%</strong>
-      <div class="mt-2 h-2 bg-gray-500 rounded-full" style="width: 40%;"></div>
-    </div>
-  </div>
-</div>
-
-<div class="mt-4">
-  <div class="bg-white shadow-md rounded-lg p-4">
-    <div class="text-lg font-semibold">Traffic & Sales</div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-      <div>
-        <div class="grid grid-cols-2 gap-4">
-          <div class="border-l-4 border-blue-500 p-4">
-            <div class="text-sm text-gray-500">New Clients</div>
-            <div class="text-xl font-semibold">9,123</div>
-          </div>
-          <div class="border-l-4 border-red-500 p-4">
-            <div class="text-sm text-gray-500">Recurring Clients</div>
-            <div class="text-xl font-semibold">22,643</div>
-          </div>
-        </div>
-
-        <hr class="my-4" />
-
-        <div>
-          <div class="mb-4">
-            <div class="flex justify-between text-sm text-gray-500">
-              <span>Monday</span>
-              <span>34%</span>
-            </div>
-            <div class="flex space-x-2">
-              <div class="w-1/2 h-2 bg-blue-500 rounded-full"></div>
-              <div class="w-1/2 h-2 bg-red-500 rounded-full"></div>
-            </div>
-          </div>
-          <!-- Repeat similar blocks for other days (Tuesday, Wednesday, etc.) -->
-        </div>
-      </div>
-
-      <div>
-        <div class="grid grid-cols-2 gap-4">
-          <div class="border-l-4 border-yellow-500 p-4">
-            <div class="text-sm text-gray-500">Page views</div>
-            <div class="text-xl font-semibold">78,623</div>
-          </div>
-          <div class="border-l-4 border-green-500 p-4">
-            <div class="text-sm text-gray-500">Organic</div>
-            <div class="text-xl font-semibold">49,123</div>
-          </div>
-        </div>
-
-        <hr class="my-4" />
-
-        <div>
-          <div class="mb-4">
-            <div class="flex justify-between text-sm text-gray-500">
-              <span>Male</span>
-              <span>43%</span>
-            </div>
-            <div class="w-full h-2 bg-yellow-500 rounded-full"></div>
-          </div>
-
-          <div class="mb-4">
-            <div class="flex justify-between text-sm text-gray-500">
-              <span>Female</span>
-              <span>37%</span>
-            </div>
-            <div class="w-full h-2 bg-pink-500 rounded-full"></div>
-          </div>
-          <!-- Additional progress bars for Organic Search, Facebook, Twitter, etc. -->
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="mt-4">
-  <div class="bg-white p-4 shadow-lg rounded-lg">
-    <table class="table-auto w-full">
-      <thead class="bg-gray-100 text-left">
-        <tr>
-          <th class="p-2 text-center">
-            <svg class="w-5 h-5">
-              <!-- Icon here -->
-            </svg>
-          </th>
-          <th class="p-2">User</th>
-          <th class="p-2 text-center">Country</th>
-          <th class="p-2">Usage</th>
-          <th class="p-2 text-center">Payment Method</th>
-          <th class="p-2">Activity</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let user of users">
-          <td class="p-2 text-center">
-            <img [src]="user.avatar" class="w-10 h-10 rounded-full" [alt]="user.name" />
-          </td>
-          <td class="p-2">
-            <div>{{ user.name }}</div>
-            <div class="text-gray-500 text-sm">
-              {{ user.state }} | Registered: {{ user.registered }}
-            </div>
-          </td>
-          <td class="p-2 text-center">
-            <svg class="w-6 h-6">
-              <!-- Flag icon for the country -->
-            </svg>
-          </td>
-          <td class="p-2">
-            <div class="flex justify-between items-center">
-              <strong>{{ user.usage }}%</strong>
-              <span class="text-gray-500 text-xs">{{ user.period }}</span>
-            </div>
-            <div class="h-2 bg-{{ user.color }}-500 rounded-full" style="width: {{ user.usage }}%;"></div>
-          </td>
-          <td class="p-2 text-center">
-            <svg class="w-6 h-6">
-              <!-- Payment method icon -->
-            </svg>
-          </td>
-          <td class="p-2">
-            <div class="text-sm text-gray-500">Last login</div>
-            <div class="font-semibold">{{ user.activity }}</div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 </div>
